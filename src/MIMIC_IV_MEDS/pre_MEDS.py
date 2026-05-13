@@ -332,7 +332,7 @@ def main(input_dir: Path, output_dir: Path, do_overwrite: bool | None = None, do
         st = datetime.now()
 
         logger.info(f"Loading {str(df_to_load_fp.resolve())} for manipulating other dataframes...")
-        if df_to_load_fp.suffix in [".csv.gz"]:
+        if df_to_load_fp.name.endswith(".csv.gz"):
             df = df_to_load_read_fn(df_to_load_fp, columns=cols)
         else:
             df = df_to_load_read_fn(df_to_load_fp)

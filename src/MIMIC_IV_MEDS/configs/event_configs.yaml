@@ -1,17 +1,17 @@
 subject_id_col: subject_id
 hosp/admissions:
-  ed_registration:
-    code: 
-      - ED_IN
-      - hosp/admissions
-    time: col(edregtime)
-    time_format: "%Y-%m-%d %H:%M:%S"
-  ed_out:
-    code: 
-      - ED_OUT
-      - hosp/admissions
-    time: col(edouttime)
-    time_format: "%Y-%m-%d %H:%M:%S"
+  # ed_registration:
+  #   code: 
+  #     - ED_IN
+  #     - hosp/admissions
+  #   time: col(edregtime)
+  #   time_format: "%Y-%m-%d %H:%M:%S"
+  # ed_out:
+  #   code: 
+  #     - ED_OUT
+  #     - hosp/admissions
+  #   time: col(edouttime)
+  #   time_format: "%Y-%m-%d %H:%M:%S"
   admission:
     code:
       - ADMISSION-AT-HOSPITAL
@@ -440,7 +440,7 @@ icu/outputevents:
       - ICU-FLUID-OUTPUT
       - col(itemid)
       - col(valueuom)
-      - icu/inputevents
+      - icu/outputevents
     time: col(charttime)
     time_format: "%Y-%m-%d %H:%M:%S"
     hadm_id: hadm_id

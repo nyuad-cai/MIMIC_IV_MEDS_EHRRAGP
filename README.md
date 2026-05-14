@@ -58,9 +58,9 @@ export DATASET_DOWNLOAD_USERNAME=$PHYSIONET_USERNAME
 export DATASET_DOWNLOAD_PASSWORD=$PHYSIONET_PASSWORD
 
 MEDS_extract-MIMIC_IV \
-    raw_input_dir=$RAW_INPUT_DIR \
-    pre_MEDS_dir=$PRE_MEDS_DIR \
-    MEDS_cohort_dir=$MEDS_COHORT_DIR
+	raw_input_dir=$RAW_INPUT_DIR \
+	pre_MEDS_dir=$PRE_MEDS_DIR \
+	MEDS_cohort_dir=$MEDS_COHORT_DIR
 ```
 
 ## Examples and More Info
@@ -219,8 +219,8 @@ Run the extraction pipeline:
 
 ```bash
 HYDRA_FULL_ERROR=1 MEDS_extract-MIMIC_IV \
-    root_output_dir=$ROOT_OUTPUT_DIR \
-    do_copy=True
+	root_output_dir=$ROOT_OUTPUT_DIR \
+	do_copy=True
 ```
 
 The pipeline will:

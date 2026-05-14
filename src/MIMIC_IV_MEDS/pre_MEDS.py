@@ -277,7 +277,7 @@ def main(input_dir: Path, output_dir: Path, do_overwrite: bool | None = None, do
             continue
 
         if fp.suffix in [".csv", ".csv.gz"]:
-            read_fn = partial(read_fn, infer_schema_length=100000)
+            read_fn = partial(read_fn, infer_schema_length=10000000)
 
         if str(fp.resolve()) in seen_fps:
             continue

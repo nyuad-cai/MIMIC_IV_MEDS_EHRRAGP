@@ -4,6 +4,7 @@
 > extraction pipeline used in the EHR-RAGp project.
 >
 > For this fork, please install directly from source using the instructions in:
+>
 > - [EHR-RAGp Customizations](#ehr-ragp-customizations)
 
 # MIMIC-IV MEDS Extraction ETL
@@ -42,13 +43,13 @@ MEDS_extract-MIMIC_IV root_output_dir=$ROOT_OUTPUT_DIR
 When you run this, the program will:
 
 1. Download the needed raw MIMIC files for the currently supported version into
-   `$ROOT_OUTPUT_DIR/raw_input`.
+    `$ROOT_OUTPUT_DIR/raw_input`.
 
 2. Perform initial, pre-MEDS processing on the raw MIMIC files, saving the results in
-   `$ROOT_OUTPUT_DIR/pre_MEDS`.
+    `$ROOT_OUTPUT_DIR/pre_MEDS`.
 
 3. Construct the final MEDS cohort, and save it to
-   `$ROOT_OUTPUT_DIR/MEDS_cohort`.
+    `$ROOT_OUTPUT_DIR/MEDS_cohort`.
 
 You can also specify the target directories more directly with:
 
@@ -98,7 +99,7 @@ To avoid symlink creation entirely, enable file copying instead:
 MEDS_extract-MIMIC_IV root_output_dir=$ROOT_OUTPUT_DIR do_copy=True
 ```
 
----
+______________________________________________________________________
 
 # EHR-RAGp Customizations
 
@@ -108,7 +109,7 @@ The modifications introduced in this fork are designed to support retrieval-augm
 
 ## Added Features (pre_MEDS.py)
 
-### 1. Admission-Level Age Computation 
+### 1. Admission-Level Age Computation
 
 The preprocessing pipeline was extended to compute `age_at_admission` for each hospital admission using:
 
@@ -137,8 +138,6 @@ The enrichment is applied to:
 - `icu/inputevents`
 - `icu/outputevents`
 
-
-
 ## Added Features (event_configs.yaml)
 
 ### 3. EHR-RAGp Event Configuration
@@ -150,35 +149,39 @@ Compared with the original configuration, this fork modifies the event vocabular
 Key changes include:
 
 - Renaming hospital and ICU boundary events using explicit EHR-RAGp event names, such as:
-  - `ADMISSION-AT-HOSPITAL`
-  - `DISCHARGE-FROM-HOSPITAL`
-  - `ADMISSION-AT-ICU`
-  - `DISCHARGE-FROM-ICU`
+
+    - `ADMISSION-AT-HOSPITAL`
+    - `DISCHARGE-FROM-HOSPITAL`
+    - `ADMISSION-AT-ICU`
+    - `DISCHARGE-FROM-ICU`
 
 - Separating hospital admission attributes into distinct events, including:
-  - `ADMISSION-TYPE`
-  - `ADMISSION-LOCATION`
-  - `DISCHARGE-LOCATION`
-  - `AGE_AT_ADMISSION`
+
+    - `ADMISSION-TYPE`
+    - `ADMISSION-LOCATION`
+    - `DISCHARGE-LOCATION`
+    - `AGE_AT_ADMISSION`
 
 - Adding `AGE_AT_ADMISSION` as a numeric event derived during the `pre_MEDS` stage.
 
 - Renaming clinical event families to EHR-RAGp-specific event types:
-  - `DIAGNOSIS-ICD`
-  - `PROCEDURE-ICD`
-  - `LAB`
-  - `MICROBIOLOGY`
-  - `MEDICATION`
-  - `ICU-CHART`
-  - `ICU-PROCEDURE`
-  - `ICU-INFUSION`
-  - `ICU-FLUID-OUTPUT`
+
+    - `DIAGNOSIS-ICD`
+    - `PROCEDURE-ICD`
+    - `LAB`
+    - `MICROBIOLOGY`
+    - `MEDICATION`
+    - `ICU-CHART`
+    - `ICU-PROCEDURE`
+    - `ICU-INFUSION`
+    - `ICU-FLUID-OUTPUT`
 
 - Adding source-table identifiers directly into event codes, such as:
-  - `hosp/admissions`
-  - `hosp/labevents`
-  - `icu/chartevents`
-  - `icu/inputevents`
+
+    - `hosp/admissions`
+    - `hosp/labevents`
+    - `icu/chartevents`
+    - `icu/inputevents`
 
 - Enriching events with additional metadata fields needed for downstream modeling, including diagnosis/procedure sequence numbers, lab reference ranges, lab flags, ICU labels, ICU categories, and item abbreviations.
 
@@ -228,10 +231,10 @@ The pipeline will:
 
 The `do_copy=True` option is recommended to avoid symlink-related issues on some systems.
 
-
 ## Relation to Original Repository
 
 Original repository:
+
 - https://github.com/Medical-Event-Data-Standard/MIMIC_IV_MEDS
 
 This repository is an independent research extension intended for EHR-RAGp experiments and is not an official MEDS release.

@@ -192,9 +192,8 @@ def fix_static_data(raw_static_df: pl.LazyFrame, death_times_df: pl.LazyFrame) -
         "gender",
     )
 
-def add_age_at_admission(
-    admissions_df: pl.LazyFrame, patients_df: pl.LazyFrame
-) -> pl.LazyFrame:
+
+def add_age_at_admission(admissions_df: pl.LazyFrame, patients_df: pl.LazyFrame) -> pl.LazyFrame:
     """Add patient age at admission to the admissions dataframe."""
 
     # Parse admittime to datetime if needed
@@ -203,34 +202,41 @@ def add_age_at_admission(
     )
 
     return admissions_df.join(
-        patients_df.select("subject_id", "anchor_year", "anchor_age"),
-        on="subject_id",
-        how="left"
+        patients_df.select("subject_id", "anchor_year", "anchor_age"), on="subject_id", how="left"
     ).with_columns(
-        (
-            pl.col("anchor_age") + (pl.col("admittime").dt.year() - pl.col("anchor_year"))
-        ).cast(pl.Int32).alias("age_at_admission")
+        (pl.col("anchor_age") + (pl.col("admittime").dt.year() - pl.col("anchor_year")))
+        .cast(pl.Int32)
+        .alias("age_at_admission")
     )
+
 
 def add_column_from_d_items(chart_df: pl.LazyFrame, d_items_df: pl.LazyFrame) -> pl.LazyFrame:
     return chart_df.join(
-        d_items_df.select(["itemid", "category","label","abbreviation"]),
-        on="itemid",
-        how="left"
+        d_items_df.select(["itemid", "category", "label", "abbreviation"]), on="itemid", how="left"
     )
 
 
-
-    
 FUNCTIONS = {
     "hosp/diagnoses_icd": (add_discharge_time_by_hadm_id, ("hosp/admissions", ["hadm_id", "dischtime"])),
     "hosp/drgcodes": (add_discharge_time_by_hadm_id, ("hosp/admissions", ["hadm_id", "dischtime"])),
     "hosp/patients": (fix_static_data, ("hosp/admissions", ["subject_id", "deathtime"])),
     "hosp/admissions": (add_age_at_admission, ("hosp/patients", ["subject_id", "anchor_year", "anchor_age"])),
-    "icu/chartevents": (add_column_from_d_items, ("icu/d_items", ["itemid", "category","label","abbreviation"])),
-    "icu/procedureevents": (add_column_from_d_items, ("icu/d_items", ["itemid","category", "label","abbreviation"])),
-    "icu/inputevents": (add_column_from_d_items, ("icu/d_items", ["itemid","category", "label","abbreviation"])),
-    "icu/outputevents": (add_column_from_d_items, ("icu/d_items", ["itemid","category", "label","abbreviation"])),
+    "icu/chartevents": (
+        add_column_from_d_items,
+        ("icu/d_items", ["itemid", "category", "label", "abbreviation"]),
+    ),
+    "icu/procedureevents": (
+        add_column_from_d_items,
+        ("icu/d_items", ["itemid", "category", "label", "abbreviation"]),
+    ),
+    "icu/inputevents": (
+        add_column_from_d_items,
+        ("icu/d_items", ["itemid", "category", "label", "abbreviation"]),
+    ),
+    "icu/outputevents": (
+        add_column_from_d_items,
+        ("icu/d_items", ["itemid", "category", "label", "abbreviation"]),
+    ),
 }
 
 ICD_DFS_TO_FIX = [
@@ -269,7 +275,6 @@ def main(input_dir: Path, output_dir: Path, do_overwrite: bool | None = None, do
         except FileNotFoundError:
             logger.info(f"Skipping {pfx} @ {str(in_fp.resolve())} as no compatible dataframe file was found.")
             continue
-
 
         if fp.suffix in [".csv", ".csv.gz"]:
             read_fn = partial(read_fn, infer_schema_length=100000)

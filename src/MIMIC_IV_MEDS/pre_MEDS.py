@@ -276,8 +276,16 @@ def main(input_dir: Path, output_dir: Path, do_overwrite: bool | None = None, do
             logger.info(f"Skipping {pfx} @ {str(in_fp.resolve())} as no compatible dataframe file was found.")
             continue
 
-        if fp.suffix in [".csv", ".csv.gz"]:
-            read_fn = partial(read_fn, infer_schema_length=10000000)
+        if fp.suffix == ".csv" or fp.name.endswith(".csv.gz"):
+
+            def read_csv_lazy(path, columns=None):
+                return pl.read_csv(
+                    path,
+                    columns=columns,
+                    infer_schema_length=None,
+                ).lazy()
+
+            read_fn = read_csv_lazy
 
         if str(fp.resolve()) in seen_fps:
             continue
